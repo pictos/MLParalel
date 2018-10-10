@@ -14,15 +14,13 @@ namespace MLParalel
 {
     class Program
     {
-        static readonly string _datapath = Path.Combine(Environment.CurrentDirectory, "Data", "SalaryData.csv");
+        static readonly string _datapath     = Path.Combine(Environment.CurrentDirectory, "Data", "SalaryData.csv");
         static readonly string _testdatapath = Path.Combine(Environment.CurrentDirectory, "Data", "SalaryData-test.csv");
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            //  var pipe = CreateModel();
 
-
-            ObservableCollection<ILearningPipelineItem> trainers = new ObservableCollection<ILearningPipelineItem>
+            List<ILearningPipelineItem> trainers = new List<ILearningPipelineItem>
             {
                new GeneralizedAdditiveModelRegressor(),
                new PoissonRegressor()
@@ -32,29 +30,12 @@ namespace MLParalel
             Console.ReadLine();
         }
 
-
-        static LearningPipeline CreateModel()
-        {
-            var pipeline = new LearningPipeline
-            {
-                new TextLoader(_datapath).CreateFrom<SalaryData>(useHeader:true,separator:';'),
-                new ColumnConcatenator("Features","YearsExperience")
-            };
-
-            //  var batata = new Microsoft.ML.Trainers.FastForestRegressor();
-
-
-            return pipeline;
-
-        }
-
-
-        static void SetTrainers(ObservableCollection<ILearningPipelineItem> trainers)
+        static void SetTrainers(List<ILearningPipelineItem> trainers)
         {
             var trainersCount = trainers.Count;
 
 
-            var pipelines = new ObservableCollection<LearningPipeline>();
+            var pipelines = new List<LearningPipeline>();
 
             for (int i = 0; i < trainersCount; i++)
             {
@@ -119,8 +100,6 @@ namespace MLParalel
             //2489ms->using Task.Factory.StarNew( ()=> { } );
             //2856ms->using Task.Run( ()=> { } );
         }
-
-
     }
 
     static class Helper
